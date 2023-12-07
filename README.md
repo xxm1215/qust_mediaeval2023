@@ -1,6 +1,21 @@
 # Ensemble-Pre-trained-Multimodal-Models-for-Image-text-Retrieval-in-the-NewsImages-MediaEval-2023
-Run #1：使用Blip-2模型作为预训练模型，分别对文本和图像进行编码获取各自的特征，通过计算文本与所有图像的余弦相似度进行排名，在排名结果中选择前100张最相关的图像作为我们的预测结果。
-Run #2：使用CLIP的ViT-H/14模型作为预训练模型，分别对文章文本和图像进行编码，计算文章文本特征与所有测试图像特征之间的相似度，考虑增加Dual softmax方法来计算文本和图像之间的相似度排名，选取前100张最相关的图像作为我们的预测结果。
-Run #3：通过设计多任务对比学习模型，对测试集的处理与训练集类似，将每一条文本与测试集中所有图片计算余弦相似度，最终只保留相似度排名前100的图文对作为我们的预测结果。
-Run #4：与Run #2类似，我们使用CLIP的ViT-H/14@336px模型，分别对文章文本（或文章标题）和图像进行编码。
-Run #5：在Run #2、Run #3和Run #4的基础上，我们重新训练了三个模型，考虑将三个模型的预测结果集成进行投票得到最终的决策，其中每个模型的结果包含所有的文本，每条文本对应的100张图像以及每条文本和图像之间的余弦相似度，随后选定一条文本的URL，把所有相同的图片的余弦相似度加和，将结果进行从大到小排序，选取前100张最相关的图像作为我们的预测结果。
+For each of the test datasets (RT, GDELT-P1, GDELT-P2), we submitted the results of five runs
+separately, the implementation details are presented as follows:
+Run #1: Using the BLIP-2 model as the feature extractor, we encode article text and images
+separately to obtain their respective features. We rank the images by calculating the cosine
+similarity between text and all test images. From these ranking results, we select the top 100
+most relevant images as our predicted results.
+Run #2: Using the ViT-H/14 model of CLIP as the feature extractor, we encode article text
+and images separately. We calculate the similarity between text features and all test image
+features. We add the dual softmax method to calculate the similarity ranking between text and
+images. The top 100 most relevant images are selected as our predicted results.
+Run #3: By designing a multi-task contrastive learning model, we process the test set
+similarly to the training set. For each text, we calculate cosine similarity with all test images
+and keep only the top 100 text-image pairs based on similarity as our predicted results.
+Run #4: As Run #2, we use the ViT-H/14@336px model of CLIP to encode article text (or
+article titles) and images separately.
+Run #5: Based on Runs #2, #3, and #4, we retrained three models, the results of each model
+include all texts, with each text corresponding to 100 images and the cosine similarity between
+each text and image. We then select a specific text URL and sum the cosine similarities for all
+identical images. The results are sorted in descending order, and the top 100 most relevant
+images are selected as our predicted results.
